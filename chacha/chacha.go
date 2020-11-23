@@ -7,7 +7,6 @@ import (
 	"fmt"
 	"github.com/VaulGuard/encryption"
 	"golang.org/x/crypto/chacha20poly1305"
-	"io"
 )
 
 const (
@@ -17,19 +16,6 @@ const (
 type secretKeyEncryption struct {
 	cipher cipher.AEAD
 	key    []byte
-}
-
-func readKey(out []byte, r io.Reader) error {
-	read, err := r.Read(out)
-	if err != nil {
-		return err
-	}
-
-	if read != SecretKeyLength {
-		return encryption.ErrKeyLength
-	}
-
-	return nil
 }
 
 func New(key []byte) (encryption.Service, error) {
