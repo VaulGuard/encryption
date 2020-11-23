@@ -4,6 +4,7 @@ import (
 	"crypto/rand"
 	"errors"
 	"github.com/VaulGuard/encryption"
+	"github.com/VaulGuard/encryption/internal"
 	"golang.org/x/crypto/nacl/box"
 	"io"
 )
@@ -12,11 +13,11 @@ func New(publicKey, privateKey io.Reader) (encryption.Service, error) {
 	var publicKeyBytes [32]byte
 	var privateKeyBytes [32]byte
 
-	if err := encryption.GenerateRandomKey(publicKeyBytes[:], publicKey); err != nil {
+	if err := internal.GenerateRandomKey(publicKeyBytes[:], publicKey); err != nil {
 		return nil, err
 	}
 
-	if err := encryption.GenerateRandomKey(privateKeyBytes[:], privateKey); err != nil {
+	if err := internal.GenerateRandomKey(privateKeyBytes[:], privateKey); err != nil {
 		return nil, err
 	}
 

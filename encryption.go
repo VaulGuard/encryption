@@ -2,7 +2,6 @@ package encryption
 
 import (
 	"errors"
-	"io"
 )
 
 var (
@@ -16,18 +15,4 @@ type Service interface {
 	EncryptString(msg string) ([]byte, error)
 	Decrypt(dst, msg []byte) ([]byte, error)
 	DecryptString(msg []byte) (string, error)
-}
-
-
-func GenerateRandomKey(out []byte, r io.Reader) error {
-	read, err := r.Read(out)
-	if err != nil {
-		return err
-	}
-
-	if read != 32 {
-		return ErrKeyLength
-	}
-
-	return nil
 }
