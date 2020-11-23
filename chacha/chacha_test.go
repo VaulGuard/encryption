@@ -31,7 +31,7 @@ func TestChaChaSecretKeyEncryption(t *testing.T) {
 	t.Run("SmallMessageInDecryption", func(t *testing.T) {
 		dst := make([]byte, 24, 25)
 		_, err := service.Encrypt(dst, []byte("Hello World"))
-		assert.NotNil(err)
+		assert.Error(err)
 	})
 
 	t.Run("DecryptionWithSmallMessageSize", func(t *testing.T) {
@@ -41,6 +41,6 @@ func TestChaChaSecretKeyEncryption(t *testing.T) {
 
 		_, err := service.DecryptString(data)
 
-		assert.NotNil(err)
+		assert.Error(err)
 	})
 }
