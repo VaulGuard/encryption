@@ -6,9 +6,11 @@ type (
 )
 
 const (
-	ChaCha20Poly1305 SecretKeyEncryption = "chacha20poly1305"
+	ChaCha20Poly1305              SecretKeyEncryption = "chacha20poly1305"
+	UnsupportedSecretKeyAlgorithm                     = ""
 
-	XSalsa20 PublicKeyEncryption = "xsalsa20"
+	XSalsa20                      PublicKeyEncryption = "xsalsa20"
+	UnsupportedPublicKeyAlgorithm                     = ""
 )
 
 func ValidateSecretKeyEnum(value SecretKeyEncryption) (SecretKeyEncryption, error) {
