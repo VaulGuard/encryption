@@ -11,28 +11,37 @@ const (
 	XSalsa20 PublicKeyEncryption = "xsalsa20"
 )
 
-func (s *SecretKeyEncryption) UnmarshalYAML(unmarshal func(interface{}) error) error {
+func ValidateSecretKeyEnum(value SecretKeyEncryption) (SecretKeyEncryption, error) {
+	switch casted := value; casted {
+	case ChaCha20Poly1305:
+		return casted, nil
+	}
+
+	return "", ErrAlgorithmNotSupported
+}
+
+func ValidatePublicKeyEnum(value PublicKeyEncryption) (PublicKeyEncryption, error) {
+	switch value {
+	case XSalsa20:
+		return value, nil
+	}
+
+	return "", ErrAlgorithmNotSupported
+}
+
+func (s *SecretKeyEncryption) UnmarshalYAML(unmarshal func(interface{}) error) (err error) {
 	var v string
 	if err := unmarshal(&v); err != nil {
 		return err
 	}
+	*s, err = ValidateSecretKeyEnum(SecretKeyEncryption(v))
 
-	switch casted := SecretKeyEncryption(v); casted {
-	case ChaCha20Poly1305:
-		*s = casted
-		return nil
-	}
-
-	return ErrAlgorithmNotSupported
+	return err
 }
 
-func (s *SecretKeyEncryption) UnmarshalJSON(bytes []byte) error {
-	switch casted := SecretKeyEncryption(bytes); casted {
-	case ChaCha20Poly1305:
-		*s = casted
-		return nil
-	}
-	return ErrAlgorithmNotSupported
+func (s *SecretKeyEncryption) UnmarshalJSON(bytes []byte) (err error) {
+	*s, err = ValidateSecretKeyEnum(SecretKeyEncryption(bytes))
+	return err
 }
 
 func (s SecretKeyEncryption) MarshalYAML() (interface{}, error) {
@@ -43,29 +52,18 @@ func (s SecretKeyEncryption) MarshalJSON() ([]byte, error) {
 	return []byte(s), nil
 }
 
-func (s *PublicKeyEncryption) UnmarshalYAML(unmarshal func(interface{}) error) error {
+func (s *PublicKeyEncryption) UnmarshalYAML(unmarshal func(interface{}) error) (err error) {
 	var v string
 	if err := unmarshal(&v); err != nil {
 		return err
 	}
-
-	switch casted := PublicKeyEncryption(v); casted {
-	case XSalsa20:
-		*s = casted
-		return nil
-	}
-
-	return ErrAlgorithmNotSupported
+	*s, err = ValidatePublicKeyEnum(PublicKeyEncryption(v))
+	return err
 }
 
-func (s *PublicKeyEncryption) UnmarshalJSON(bytes []byte) error {
-	switch casted := PublicKeyEncryption(bytes); casted {
-	case XSalsa20:
-		*s = casted
-		return nil
-	}
-
-	return ErrAlgorithmNotSupported
+func (s *PublicKeyEncryption) UnmarshalJSON(bytes []byte) (err error) {
+	*s, err = ValidatePublicKeyEnum(PublicKeyEncryption(bytes))
+	return err
 }
 
 func (s PublicKeyEncryption) MarshalYAML() (interface{}, error) {
