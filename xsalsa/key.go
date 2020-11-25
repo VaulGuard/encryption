@@ -2,15 +2,15 @@ package xsalsa
 
 import (
 	"crypto/rand"
-	"github.com/VaulGuard/encryption"
 	"io"
 
+	"github.com/VaulGuard/encryption"
 	"github.com/VaulGuard/encryption/internal"
 	"golang.org/x/crypto/nacl/box"
 )
 
 const (
-	PublicKeyLength = 32
+	PublicKeyLength  = 32
 	PrivateKeyLength = 32
 )
 
